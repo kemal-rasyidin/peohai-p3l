@@ -17,7 +17,7 @@
                     <div>
                         <h1
                             class="text-4xl font-bold mb-3 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
-                            Selamat datang, !
+                            Selamat datang, {{ Auth::user()->name }}!
                         </h1>
                         <p class="text-xl text-blue-100 mb-4">Here's what's happening with your system today.</p>
                         <div class="flex items-center space-x-4 text-sm text-blue-200">
