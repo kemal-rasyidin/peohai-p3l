@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminEntryDateController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -14,6 +15,8 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('admin/home');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::resource('/admin_entry_dates', AdminEntryDateController::class)->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
