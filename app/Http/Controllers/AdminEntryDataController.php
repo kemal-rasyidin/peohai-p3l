@@ -100,11 +100,11 @@ class AdminEntryDataController extends Controller
             ->with('success', 'Data berhasil diperbarui.');
     }
 
-    // public function destroy(AdminEntryDate $admin_entry_date, AdminEntryData $admin_entry_data)
-    // {
-    //     $admin_entry_data->delete();
+    public function destroy(AdminEntryDate $admin_entry_date, AdminEntryData $admin_entry_data)
+    {
+        $admin_entry_data->delete();
 
-    //     return redirect()->route('admin_entry_dates.admin_entry_datas.index', $admin_entry_date)
-    //         ->with('success', 'Data berhasil dihapus.');
-    // }
+        return redirect()->route('admin_entry_dates.admin_entry_datas.index', $admin_entry_date)
+            ->with('success', 'Data berhasil dihapus.');
+    }
 }
