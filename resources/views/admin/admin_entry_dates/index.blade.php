@@ -64,7 +64,7 @@
                             </tr>
                         @empty
                             <div
-                                class="bg-gradient-to-r from-red-100 to-red-200 text-red-900 px-6 py-5 w-full text-lg font-semibold">
+                                class="bg-gradient-to-l from-white to-red-200 text-red-900 px-6 py-5 w-full text-lg font-semibold">
                                 Data belum tersedia!
                             </div>
                         @endforelse
