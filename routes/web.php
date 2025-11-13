@@ -3,6 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminEntryDateController;
 use App\Http\Controllers\AdminEntryDataController;
+use App\Http\Controllers\AdminEntryController;
+use App\Http\Controllers\FinanceEntryController;
+use App\Http\Controllers\EntryPeriodController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -12,6 +15,21 @@ Route::get('/', function () {
 // Route::get('/admin', function () {
 //     return view('admin/home');
 // });
+
+Route::resource('entry_periods', EntryPeriodController::class)->middleware(['auth', 'verified']);
+
+// Nested resource untuk Admin Entry
+Route::resource('entry_periods.admin_entries', AdminEntryController::class)
+    ->parameters(['admin_entries' => 'entry'])
+    ->names('admin.entries')
+    ->middleware(['auth', 'verified']);
+
+// Nested resource untuk Finance Entry
+Route::resource('entry_periods.finance_entries', FinanceEntryController::class)
+    ->parameters(['finance_entries' => 'entry'])
+    ->names('finance.entries')
+    ->except(['create', 'store', 'show', 'destroy'])
+    ->middleware(['auth', 'verified']); // biasanya finance hanya edit/update
 
 Route::get('/dashboard', function () {
     return view('admin/home');
