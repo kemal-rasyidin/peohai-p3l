@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('entry_periods', function (Blueprint $table) {
             $table->id();
-            $table->string('bulan');
-            $table->year('tahun');
+            $table->integer('bulan');
+            $table->integer('tahun');
             $table->timestamps();
         });
     }

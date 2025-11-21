@@ -37,6 +37,16 @@
                 class="shadow-md rounded-md bg-green-500 hover:bg-green-600 p-4 text-white font-semibold">+ Tambah</a>
         </div>
 
+        <div class="flex justify-end">
+            <a href="{{ route('partners.create') }}"
+                class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-md shadow-sm">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Tambah
+            </a>
+        </div>
+
         @if (session('success'))
             <div class="bg-green-100 text-green-700 p-3 rounded">{{ session('success') }}</div>
         @endif

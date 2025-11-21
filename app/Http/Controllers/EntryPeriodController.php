@@ -7,83 +7,115 @@ use Illuminate\Http\Request;
 
 class EntryPeriodController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $periods = EntryPeriod::orderByDesc('tahun')->orderByDesc('id')->paginate(10);
-        return view('admin/entry_periods.index', compact('periods'));
+        $query = EntryPeriod::query()->withCount('entries'); // Asumsi ada relasi entries()
+
+        // Filter by tahun only
+        if ($request->filled('filter_tahun')) {
+            $query->where('tahun', $request->filter_tahun);
+        }
+
+        // Filter by bulan only
+        if ($request->filled('filter_bulan')) {
+            $query->where('bulan', $request->filter_bulan);
+        }
+
+        // Order by latest
+        $query->orderBy('tahun', 'desc')->orderBy('bulan', 'desc');
+
+        $periods = $query->paginate(10)->withQueryString();
+
+        // Get available years for filter dropdown
+        $years = EntryPeriod::distinct()
+            ->orderBy('tahun', 'desc')
+            ->pluck('tahun');
+
+        return view('admin.entry_periods.index', compact('periods', 'years'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        return view('admin/entry_periods.create');
+        return view('admin.entry_periods.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'bulan' => 'required|string|max:20',
-            'tahun' => 'required|digits:4|integer|min:2000',
+            'periode' => 'required|date_format:Y-m',
+        ], [
+            'periode.required' => 'Periode wajib diisi',
+            'periode.date_format' => 'Format periode tidak valid',
         ]);
 
-        // Cegah duplikat periode
-        if (EntryPeriod::where($validated)->exists()) {
-            return back()->withErrors(['periode' => 'Periode ini sudah ada.'])->withInput();
+        // Parse periode menjadi tahun dan bulan
+        [$tahun, $bulan] = explode('-', $validated['periode']);
+
+        // Cek duplikasi periode
+        $exists = EntryPeriod::where('tahun', $tahun)
+            ->where('bulan', $bulan)
+            ->exists();
+
+        if ($exists) {
+            return back()
+                ->withErrors(['periode' => 'Periode untuk bulan dan tahun ini sudah ada.'])
+                ->withInput();
         }
 
-        EntryPeriod::create($validated);
+        // Simpan data
+        EntryPeriod::create([
+            'tahun' => $tahun,
+            'bulan' => $bulan,
+        ]);
 
         return redirect()->route('entry_periods.index')
-            ->with('success', 'Periode berhasil ditambahkan.');
+            ->with('success', 'Periode berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(EntryPeriod $entryPeriod)
     {
-        return view('admin/entry_periods.edit', compact('entryPeriod'));
+        return view('admin.entry_periods.edit', compact('entryPeriod'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, EntryPeriod $entryPeriod)
     {
         $validated = $request->validate([
-            'bulan' => 'required|string|max:20',
-            'tahun' => 'required|digits:4|integer|min:2000',
+            'periode' => 'required|date_format:Y-m',
         ]);
 
-        $entryPeriod->update($validated);
+        [$tahun, $bulan] = explode('-', $validated['periode']);
+
+        // Cek duplikasi kecuali data sendiri
+        $exists = EntryPeriod::where('tahun', $tahun)
+            ->where('bulan', $bulan)
+            ->where('id', '!=', $entryPeriod->id)
+            ->exists();
+
+        if ($exists) {
+            return back()
+                ->withErrors(['periode' => 'Periode untuk bulan dan tahun ini sudah ada.'])
+                ->withInput();
+        }
+
+        $entryPeriod->update([
+            'tahun' => $tahun,
+            'bulan' => $bulan,
+        ]);
 
         return redirect()->route('entry_periods.index')
-            ->with('success', 'Periode berhasil diperbarui.');
+            ->with('success', 'Periode berhasil diperbarui');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(EntryPeriod $entryPeriod)
     {
+        // Cek apakah ada entries terkait
+        if ($entryPeriod->entries()->count() > 0) {
+            return back()->with('error', 'Periode tidak dapat dihapus karena masih memiliki data entry.');
+        }
+
         $entryPeriod->delete();
+
         return redirect()->route('entry_periods.index')
-            ->with('success', 'Periode berhasil dihapus.');
+            ->with('success', 'Periode berhasil dihapus');
     }
 }

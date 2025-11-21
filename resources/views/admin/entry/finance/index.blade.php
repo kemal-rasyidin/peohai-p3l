@@ -1,10 +1,28 @@
 <x-admin.layout>
-    <div class="space-y-8">
+    <div class="space-y-6">
+
         <div class="bg-blue-500 overflow-hidden shadow-md rounded-lg text-lg font-semibold mb-3 text-white">
             <div class="p-6 text-gray-100">
                 Finance Data Entry Periode {{ $entry_period->periode }}
             </div>
         </div>
+
+        @if (session('success'))
+            <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-md">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-green-700">{{ session('success') }}</p>
+                    </div>
+                </div>
+            </div>
+        @endif
 
         <div class="bg-white p-4 rounded-lg shadow-md mb-4">
             <form method="GET" action="{{ route('admin.entries.index', $entry_period->id) }}">
@@ -12,7 +30,7 @@
                     <input type="text" name="search" placeholder="Cari?" value="{{ request('search') }}"
                         class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                     <button type="submit"
-                        class="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md font-semibold shadow-md">
+                        class="px-6 py-2 border border-blue-500 bg-blue-50 text-blue-600 hover:text-white hover:bg-blue-500 rounded-md font-semibold shadow-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                             <path fill="currentColor"
                                 d="M9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l5.6 5.6q.275.275.275.7t-.275.7t-.7.275t-.7-.275l-5.6-5.6q-.75.6-1.725.95T9.5 16m0-2q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14" />
@@ -31,50 +49,68 @@
             </form>
         </div>
 
-        @if (session('success'))
-            <div class="bg-green-100 text-green-700 p-3 rounded">{{ session('success') }}</div>
-        @endif
-
-        <div class="bg-white overflow-hidden shadow-lg rounded-lg">
+        <div class="bg-white overflow-hidden shadow-md rounded-lg">
             <div class="overflow-x-auto">
-                <table class="min-w-full table-auto">
-                    <thead class="bg-gray-100">
+                <table class="min-w-full divide-gray-200">
+                    <thead class="bg-gray-50">
                         <tr class="text-justify">
-                            <th class="py-4 px-6 text-left text-gray-600">No</th>
-                            <th class="py-4 px-6 text-left text-gray-600">Qty</th>
-                            <th class="py-4 px-6 text-left text-gray-600">Tgl Stuffing</th>
-                            <th class="py-4 px-6 text-left text-gray-600">Pengirim</th>
-                            <th class="py-4 px-6 text-left text-gray-600">Nama Kapal</th>
-                            <th class="py-4 px-6 text-left text-gray-600">Voy</th>
-                            <th class="py-4 px-6 text-left text-gray-600">Tujuan</th>
-                            <th class="py-4 px-6 text-left text-gray-600">No Cont</th>
-                            <th class="py-4 px-6 text-left text-gray-600">Seal</th>
-                            <th class="py-4 px-6 text-left text-gray-600">ETD</th>
-                            <th class="py-4 px-6 text-left text-gray-600">Agen</th>
-                            <th class="py-4 px-6 text-left text-gray-600">Dooring</th>
-                            <th class="py-4 px-6 text-left text-gray-600">No Invoice</th>
-                            <th class="py-4 px-6 text-left text-gray-600">Status PPH</th>
-                            <th class="py-4 px-6 text-left text-gray-600">Aksi</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                No</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Qty</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Tgl Stuffing</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Pengirim</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Nama Kapal</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Voy</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Tujuan</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                No Cont</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Seal</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                ETD</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Agen</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Dooring</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                No Invoice</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Status PPH</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white">
+                    <tbody class="bg-white divide-y divide-gray-200">
                         @forelse ($entries as $entry)
-                            <tr>
-                                <td class="py-4 px-6 border-b border-gray-200">{{ $loop->iteration }}</td>
-                                <td class="py-4 px-6 border-b border-gray-200">{{ $entry->qty }}</td>
-                                <td class="py-4 px-6 border-b border-gray-200">{{ $entry->tgl_stuffing }}</td>
-                                <td class="py-4 px-6 border-b border-gray-200">{{ $entry->pengirim }}</td>
-                                <td class="py-4 px-6 border-b border-gray-200">{{ $entry->nama_kapal }}</td>
-                                <td class="py-4 px-6 border-b border-gray-200">{{ $entry->voy }}</td>
-                                <td class="py-4 px-6 border-b border-gray-200">{{ $entry->tujuan }}</td>
-                                <td class="py-4 px-6 border-b border-gray-200">{{ $entry->no_cont }}</td>
-                                <td class="py-4 px-6 border-b border-gray-200">{{ $entry->seal }}</td>
-                                <td class="py-4 px-6 border-b border-gray-200">{{ $entry->etd }}</td>
-                                <td class="py-4 px-6 border-b border-gray-200">{{ $entry->agen }}</td>
-                                <td class="py-4 px-6 border-b border-gray-200">{{ $entry->dooring }}</td>
-                                <td class="py-4 px-6 border-b border-gray-200">{{ $entry->no_inv }}</td>
-                                <td class="py-4 px-6 border-b border-gray-200">{{ $entry->pph_status }}</td>
-                                <td class="py-4 px-6 border-b border-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $loop->iteration }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $entry->qty }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $entry->tgl_stuffing }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $entry->pengirim }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $entry->nama_kapal }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $entry->voy }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $entry->tujuan }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $entry->no_cont }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $entry->seal }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $entry->etd }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $entry->agen }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $entry->dooring }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $entry->no_inv }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $entry->pph_status }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     <form onsubmit="return confirm('Apakah Anda Yakin ?');"
                                         class="flex flex-wrap gap-2">
 
@@ -99,7 +135,9 @@
                     </tbody>
                 </table>
             </div>
-            {{ $entries->links() }}
+            <div class="px-6 py-4 border-t border-gray-200">
+                {{ $entries->links() }}
+            </div>
         </div>
 
     </div>

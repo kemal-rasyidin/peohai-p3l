@@ -1,5 +1,5 @@
 <x-admin.layout>
-    <div class="space-y-8">
+    <div class="space-y-6">
 
         <div class="bg-yellow-600 text-white shadow-md rounded-lg">
             <div class="p-6 text-lg font-semibold">
@@ -28,8 +28,10 @@
                             <div class="mt-2 grid grid-cols-1">
                                 <select id="pph_status" name="pph_status" autocomplete="pph_status"
                                     class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                                    <option value="PPH" {{ old('pph_status') == 'PPH' ? 'selected' : '' }}>PPH</option>
-                                    <option value="Non" {{ old('pph_status') == 'Non' ? 'selected' : '' }}>Non</option>
+                                    <option value="PPH" {{ old('pph_status') == 'PPH' ? 'selected' : '' }}>PPH
+                                    </option>
+                                    <option value="Non" {{ old('pph_status') == 'Non' ? 'selected' : '' }}>Non
+                                    </option>
                                 </select>
                                 <svg class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
                                     viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
@@ -42,13 +44,15 @@
                     </div>
                     <hr class="h-px my-8 bg-gray-300 border-0">
                 </div>
-
-                <div class="mt-6 flex items-center justify-end gap-x-6">
+                <div class="mt-8 flex items-center justify-end gap-x-4">
+                    <button onclick="history.back()"
+                        class="text-sm font-semibold text-gray-700 hover:text-gray-900 px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-50">
+                        Kembali
+                    </button>
                     <button type="submit"
                         class="rounded-md bg-yellow-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-yellow-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Update</button>
                 </div>
             </form>
         </div>
-
     </div>
 </x-admin.layout>
